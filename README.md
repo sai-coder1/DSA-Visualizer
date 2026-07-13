@@ -21,7 +21,8 @@ An interactive web application that visualizes popular sorting algorithms with s
 - JavaScript
 
 ## Screenshots
-<img width="1897" height="887" alt="dsa" src="https://github.com/user-attachments/assets/bc72c308-aede-47ad-8e85-5fa305eb6fd1" />
+<img width="1906" height="868" alt="dsa" src="https://github.com/user-attachments/assets/a3ed78ca-d8f8-4bbc-ac89-e6ef724c1cac" />
+
 
 
 
