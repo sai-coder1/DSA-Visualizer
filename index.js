@@ -746,5 +746,3 @@ async function startSorting() {
     const totalTime = (performance.now() - startTime);
     time.textContent = `${totalTime.toFixed(2)}ms`;
 }
-
-console.log(document.querySelector(".container").clientWidth);
