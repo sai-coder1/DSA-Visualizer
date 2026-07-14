@@ -93,8 +93,7 @@ button:hover{
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    gap:clamp(4px,1vw,18px);
-
+    gap:2px;
     overflow: hidden;
 }
 .bar{
@@ -217,4 +216,11 @@ button:hover{
     flex-wrap: wrap;
     justify-content: center;
     align-items:center;
+}
+@media (max-width:900px) {
+    .content{
+        flex-direction: column;
+        overflow: hidden;
+    }
+
 }
