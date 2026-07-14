@@ -245,14 +245,29 @@ function createArray(size) {
     return arr;
 }
 
+function updateBarWidths() {
+    const bars = getBars();
+    const containerWidth = container.clientWidth;
+    const gap = 2;
+    const barWidth = Math.max(2, (containerWidth / bars.length) - gap);
+    bars.forEach(bar => {
+        bar.style.width = `${barWidth}px`;
+    });
+}
+
+window.addEventListener("resize", updateBarWidths);
 
 function renderBars(arr) {
     container.innerHTML = "";
 
+    const containerWidth = container.clientWidth;
+    const gap = 2;
+    const barWidth = Math.max(2, (containerWidth / arr.length) - gap);
     arr.forEach(value => {
         const bar = document.createElement("div");
-        bar.className="bar";
-        bar.style.height = `${value * 5}px`;
+        bar.className = "bar";
+        bar.style.width = `${barWidth}px`;
+        bar.style.height = `${value}%`;
 
         container.appendChild(bar);
     });
@@ -448,7 +463,7 @@ async function mergeArrays(left, mid, right) {
             swapsCount++;
             swaps.textContent = swapsCount;
             
-            bars[k].style.height = `${arr[k] * 4}px`;
+            bars[k].style.height = `${arr[k]}%`;
             await sleep(getDelay()/2);
             bars[k].style.backgroundColor = colors.MERGING;
 
@@ -465,7 +480,7 @@ async function mergeArrays(left, mid, right) {
             swapsCount++;
             swaps.textContent = swapsCount;
 
-            bars[k].style.height = `${arr[k] * 4}px`;
+            bars[k].style.height = `${arr[k]}%`;
             await sleep(getDelay());
             bars[k].style.backgroundColor = colors.MERGING;
 
@@ -482,7 +497,7 @@ async function mergeArrays(left, mid, right) {
         swapsCount++;
         swaps.textContent = swapsCount;
 
-        bars[k].style.height = `${arr[k] * 4}px`;
+        bars[k].style.height = `${arr[k]}%`;
         await sleep(getDelay()*2);
 
         bars[k].style.backgroundColor = colors.MERGING;
@@ -498,7 +513,7 @@ async function mergeArrays(left, mid, right) {
         swapsCount++;
         swaps.textContent = swapsCount;
         
-        bars[k].style.height = `${arr[k] * 4}px`;
+        bars[k].style.height = `${arr[k]}%`;
         await sleep(getDelay()*2);
         bars[k].style.backgroundColor = colors.MERGING;
 
@@ -619,7 +634,7 @@ async function insertion() {
             j--;
         }
         arr[j + 1] = key;
-        bars[j + 1].style.height = `${key * 4}px`;
+        bars[j + 1].style.height = `${key}%`;
 
         await sleep(getDelay());
 
@@ -732,3 +747,4 @@ async function startSorting() {
     time.textContent = `${totalTime.toFixed(2)}ms`;
 }
 
+console.log(document.querySelector(".container").clientWidth);
