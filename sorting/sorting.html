@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Sorting Visualiser</title>
+    <link rel="stylesheet" href="sorting.css">
+</head>
+<body>
+
+    <div class="wrapper">
+    <h1>Sorting Visualiser</h1>
+
+
+    <div class="card">
+
+        <div class="controls">
+            <div class="control">
+                <label for="algo">Algorithm : </label>
+                <select id="algo">
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="insertion">Insertion Sort</option>
+                <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort</option>
+                </select>
+            </div>
+            
+            <div class="control">
+                <label>Array Size : <span id="sizeVal">30</span></label>
+                <input type="range" id="size" min="10" max="50" value="10">
+            </div>
+            <div class="control">
+                <label>Speed : <span id="speedVal">30</span></label>
+                <input type="range" id="speed" min="1" max="100" value="1">
+            </div>
+            <button id="generate">Generate</button>
+            <button id="start"> Start Sorting </button>
+        </div>
+
+        <div class="main">
+            <div class="menu">
+                <div class="playControls">
+                    <button id="pause">Pause</button>
+                    <button id="reset">Reset</button>
+                </div>
+
+                <div class="legend">
+
+                    <div class="legend-item">
+                        <span class="color blue"></span>
+                        <span>🔵Unsorted</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="color red"></span>
+                        <span>🔴Comparing</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="color yellow"></span>
+                        <span>🟡Current Minimum/Pivot </span>
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="color Purple"></span>
+                        <span>🟣Active Merge Range</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="color green"></span>
+                        <span>🟢Sorted</span>
+                    </div>
+                </div>
+
+            </div>
+
+                <div class="content">
+                    <div class="container"></div>
+                    <div class="info">
+                        <div class="info-card">
+                            <div id="algorithmInfo"></div>
+                        </div>
+                       <div class="stats">
+                        <h3>📊 Live Statistics</h3>
+                        <div class="stat">
+                            <span>⚖ Comparisons</span>
+                            <span id="comparisons">0</span>
+                        </div>
+                        <div class="stat">
+                            <span id="swapsLabel">🔄 Swaps</span>
+                            <span id="swaps">0</span>
+                        </div>
+
+                        <div class="stat">
+                            <span>⏱ Time</span>
+                            <span id="time">0.00 s</span>
+                        </div>
+
+                        <div class="stat">
+                            <span>🟢 Status</span>
+                            <span id="status">Ready</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        </div>
+
+        
+        <div id="popup" class="popup hidden">
+            <h2 id="popupTitle"></h2>
+            <p id="popupIdea"></p>
+            <p id="popupNext"></p>
+            <button id="closePopup">Close</button>
+    </div>
+
+</div>
+
+    
+    <script src="sorting.js"></script>
+
+    </body>
+    
+</html>

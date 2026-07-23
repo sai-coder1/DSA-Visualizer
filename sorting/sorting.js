@@ -736,7 +736,6 @@ async function startSorting() {
         controls(false);
         return;
     }
-
     await algorithms[selected]();
     if (!isReset) {
         showPopup(selected);
