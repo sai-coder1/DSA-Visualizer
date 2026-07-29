@@ -133,7 +133,11 @@ const swapsLabel = document.getElementById("swapsLabel");
 const time = document.getElementById("time");
 const status = document.getElementById("status");
 
+const clickSound = configureSound(new Audio("../sounds/button-click.mp3"));
+const errorSound = configureSound(new Audio("../sounds/error.mp3"));
+const successSound = configureSound(new Audio("../sounds/success.mp3"));
 
+const swapSound = configureSound(new Audio("../sounds/whoosh.mp3"));
 
 
 //-------------------------------//
@@ -169,10 +173,14 @@ speed.innerText = speedSlider.value;
 //-----------------event Listeners-----------------------//
 
 // Start Sorting//
-sort.addEventListener("click", startSorting);
+sort.addEventListener("click", () => {
+    playSound(clickSound);
+    startSorting();
+});
 
 // Generate New Array//
 generate.addEventListener("click", () => {
+    playSound(clickSound);
     arr = createArray(sizeSlider.value);
     renderBars(arr);
 });
@@ -205,9 +213,11 @@ algorithm.addEventListener("change", () => {
 // Close Popup//
 closePopup.addEventListener("click", () => {
     popup.classList.add("hidden");
+    playSound(clickSound);
 });
 
 pause.addEventListener("click", () => { 
+    playSound(clickSound);
     isPaused = !isPaused;
     if (isPaused) {
         pause.textContent = "Resume";
@@ -220,6 +230,7 @@ pause.addEventListener("click", () => {
 });
 
 reset.addEventListener("click", () => {
+    playSound(clickSound);
     isReset = true;
     isPaused = false;
     pause.textContent = "Pause";
@@ -377,6 +388,7 @@ async function swapBars(j) {
     comparisons.textContent = comparisonsCount;
     if (arr[j] > arr[j + 1]) {
 
+        playSound(swapSound);
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
         swapsCount++;
         swaps.textContent = swapsCount;
@@ -408,6 +420,7 @@ async function swapSelection(j, mini) {
     const delay =getDelay();
     await sleep(delay);
 
+    playSound(swapSound);
     [arr[j], arr[mini]] = [arr[mini], arr[j]];
     swapsCount++;
     swaps.textContent = swapsCount;
@@ -428,8 +441,10 @@ async function shiftBars(current, next) {
     
     const delay =getDelay();
     await sleep(delay);
+    playSound(swapSound);
     swapsCount++;
     swaps.textContent = swapsCount;
+
     arr[next] = arr[current];
     bars[next].style.height = bars[current].style.height;
 
@@ -451,6 +466,8 @@ async function mergeArrays(left, mid, right) {
     let k = left;
     while (i < leftArray.length && j < rightArray.length) {
         if (isReset) return;
+
+
         comparisonsCount++;
         comparisons.textContent = comparisonsCount;
 
@@ -460,6 +477,7 @@ async function mergeArrays(left, mid, right) {
             await sleep(getDelay()/2);
             arr[k] = leftArray[i];
 
+            playSound(swapSound);
             swapsCount++;
             swaps.textContent = swapsCount;
             
@@ -477,6 +495,7 @@ async function mergeArrays(left, mid, right) {
             arr[k] = rightArray[j];
 
 
+            playSound(swapSound);
             swapsCount++;
             swaps.textContent = swapsCount;
 
@@ -494,6 +513,7 @@ async function mergeArrays(left, mid, right) {
         await sleep(getDelay()*2);
         arr[k] = leftArray[i];
 
+        playSound(swapSound);
         swapsCount++;
         swaps.textContent = swapsCount;
 
@@ -510,6 +530,7 @@ async function mergeArrays(left, mid, right) {
 
         arr[k] = rightArray[j];
 
+        playSound(swapSound);
         swapsCount++;
         swaps.textContent = swapsCount;
         
@@ -537,6 +558,7 @@ async function swapQuick(i,j) {
     
         [arr[i], arr[j]] = [arr[j], arr[i]];
     
+        playSound(swapSound);
         swapsCount++;
         swaps.textContent = swapsCount;
 
@@ -549,6 +571,21 @@ async function swapQuick(i,j) {
         bars[i].style.backgroundColor = colors.DEFAULT;
         bars[j].style.backgroundColor = colors.DEFAULT;
 }
+
+
+function configureSound(audio) {
+    audio.volume = 0.25;
+    audio.playbackRate = 1.5;
+    return audio;
+}
+
+function playSound(sound) {
+    sound.currentTime = 0;
+    sound.play().catch(()=>{});
+}
+
+
+
 //--------------------------------------------------//
 
 
@@ -594,7 +631,7 @@ async function selection() {
             const delay =getDelay();
             await sleep(delay);
 
-            
+    
             comparisonsCount++;
             comparisons.textContent = comparisonsCount;
             if (arr[mini] > arr[j]) {
@@ -627,7 +664,7 @@ async function insertion() {
             
             comparisonsCount++;
             comparisons.textContent = comparisonsCount;
-
+    
             if (arr[j] <= key) { break; }
             if (isReset) return;
             await shiftBars(j, j + 1);
@@ -738,6 +775,7 @@ async function startSorting() {
     }
     await algorithms[selected]();
     if (!isReset) {
+        playSound(successSound);
         showPopup(selected);
     }
     controls(false);
