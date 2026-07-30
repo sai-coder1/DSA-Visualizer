@@ -109,6 +109,11 @@ This project demonstrates:
 - Sound Effects
 
 ---
+# DSA Visualizer
+
+🚀 Live Demo: https://dsa-visualiser01.netlify.app/
+
+📂 GitHub Repository: https://github.com/sai-coder1/DSA-Visualizer
 
 ## 📄 License
 
