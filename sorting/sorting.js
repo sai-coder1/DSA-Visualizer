@@ -181,6 +181,7 @@ sort.addEventListener("click", () => {
 // Generate New Array//
 generate.addEventListener("click", () => {
     playSound(clickSound);
+    resetStats();
     arr = createArray(sizeSlider.value);
     renderBars(arr);
 });

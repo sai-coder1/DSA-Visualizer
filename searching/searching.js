@@ -91,6 +91,12 @@ const currentIndexDisplay = document.getElementById("index");
 const time = document.getElementById("time");
 const status = document.getElementById("status");
 
+const clickSound = configureSound(new Audio("../sounds/button-click.mp3"));
+const errorSound = configureSound(new Audio("../sounds/error.mp3"));
+const successSound = configureSound(new Audio("../sounds/success.mp3"));
+const compareSound = configureSound(new Audio("../sounds/blip.mp3"));
+const swapSound = configureSound(new Audio("../sounds/whoosh.mp3"));
+
 
 //---------------------------------------------------//
 
@@ -118,10 +124,14 @@ speed.innerText = speedSlider.value;
 //--------------Event Listeners-------------//
 
 // Start Sorting//
-sort.addEventListener("click", startSearching);
+sort.addEventListener("click", () => {
+    playSound(clickSound);
+    startSearching();
+});
 
 // Generate New Array//
 generate.addEventListener("click", () => {
+    playSound(clickSound);
     discarded.clear();
     arr = createArray(sizeSlider.value);
 
@@ -130,6 +140,7 @@ generate.addEventListener("click", () => {
     }
 
     renderBars(arr);
+    resetStats();
 });
 
 // Change Array Size//
@@ -162,11 +173,13 @@ algorithm.addEventListener("change", () => {
 
 // Close Popup//
 closePopup.addEventListener("click", () => {
+    playSound(clickSound);
     popup.classList.add("hidden");
     resetStats();
 });
 
 pause.addEventListener("click", () => { 
+    playSound(clickSound);
     isPaused = !isPaused;
     if (isPaused) {
         pause.textContent = "Resume";
@@ -179,6 +192,7 @@ pause.addEventListener("click", () => {
 });
 
 reset.addEventListener("click", () => {
+    playSound(clickSound);
     discarded.clear();
 
     isReset = true;
@@ -216,7 +230,10 @@ function updateBarWidths() {
     const bars = getBars();
     const containerWidth = container.clientWidth;
     const gap = 2;
-    const barWidth = Math.max(2, (containerWidth / bars.length) - gap);
+
+    const paddingX = 16; 
+    const availableWidth = containerWidth - paddingX;
+    const barWidth = Math.max(2, (availableWidth - gap * (arr.length - 1)) / arr.length);
     bars.forEach(bar => {
         bar.style.width = `${barWidth}px`;
     });
@@ -229,7 +246,9 @@ function renderBars(arr) {
 
     const containerWidth = container.clientWidth;
     const gap = 2;
-    const barWidth = Math.max(2, (containerWidth / arr.length) - gap);
+    const paddingX = 16; // container's left+right padding (0.5rem + 0.5rem = 16px)
+    const availableWidth = containerWidth - paddingX;
+    const barWidth = Math.max(2, (availableWidth - gap * (arr.length - 1)) / arr.length);
     arr.forEach(number => {
 
 
@@ -258,6 +277,7 @@ function renderBars(arr) {
         container.appendChild(wrapper);
     });
 }
+
 
 function showPointer(index, text, color) {
     const wrappers = document.querySelectorAll(".bar-wrapper");
@@ -463,6 +483,19 @@ function updateLegend(type) {
         `;
     }
 }    
+
+
+function configureSound(audio) {
+    audio.volume = 0.25;
+    audio.playbackRate = 1.5;
+    return audio;
+}
+
+function playSound(sound) {
+    sound.currentTime = 0;
+    sound.play().catch(()=>{});
+}
+
 //-------------------------------------------------//
 
 //-----------main funtions---------------------//
@@ -471,6 +504,7 @@ async function linearSearch(target) {
     for (let i = 0; i < arr.length; i++){
         highlightCurrent(i);
 
+        playSound(compareSound);
         comparisonsCount++;
         comparisons.textContent = comparisonsCount;
         currentIndexDisplay.textContent = i;
@@ -482,12 +516,13 @@ async function linearSearch(target) {
             markFound(i);
             status.textContent = "Found";
             controls(false);
+            playSound(successSound);
             return i;
         }
         markChecked(i);
     }
     status.textContent = "Not Found";
-
+    playSound(errorSound);
         return -1;
 }
 
@@ -498,8 +533,8 @@ async function binarySearch(target) {
     let high = arr.length - 1;
 
     console.log("Target:", target);
-console.log("Array:", arr);
-console.log("Contains target?", arr.includes(target));
+    console.log("Array:", arr);
+    console.log("Contains target?", arr.includes(target));
 
     while (low <= high) {
 
@@ -523,6 +558,7 @@ console.log("Contains target?", arr.includes(target));
         highlightMid(mid);
         
         await sleep(getDelay() * 3);
+        playSound(compareSound);
         comparisonsCount++;
         comparisons.textContent = comparisonsCount;
         currentIndexDisplay.textContent = mid;
@@ -534,6 +570,7 @@ console.log("Contains target?", arr.includes(target));
             status.textContent = "Found";
 
             await sleep(2000);
+            playSound(successSound);
             return mid;
         }
 
@@ -551,6 +588,7 @@ console.log("Contains target?", arr.includes(target));
     }
 
     status.textContent = "Not Found";
+    playSound(errorSound);
     return -1;
 }
 
@@ -559,11 +597,14 @@ async function startSearching() {
     isPaused = false;
     const selectedAlgorithm = algorithm.value;
     const target = Number(targetInput.value);
-    if(targetInput.value===""){
-    alert("Please enter a target.");
+    if (targetInput.value === "") {
+        playSound(errorSound);
+        alert("Please enter a target.");
+        const selectedAlgorithm = algorithm.value;
         return;
     }
-    if(target < 1 || target > 100){
+    if (target < 1 || target > 100) {
+        playSound(errorSound);
     alert("Target should be between 1 and 100.");
         return;
     }    
@@ -588,10 +629,5 @@ async function startSearching() {
     }
 
     controls(false);
-    arr = createArray(sizeSlider.value);
-    if (algorithm.value === "binary") {
-    arr.sort((a, b) => a - b);
-   }
-    renderBars(arr);
     isReset = false;
 }    
