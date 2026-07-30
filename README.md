@@ -55,6 +55,7 @@ An interactive web application that helps visualize popular Data Structures and 
 ---
 
 ## 📸 Screenshots
+
 ### Home page
 <img width="1898" height="859" alt="Screenshot (748)" src="https://github.com/user-attachments/assets/d99c356b-979e-4734-bd58-c7937a856681" />
 <img width="1901" height="832" alt="Screenshot (751)" src="https://github.com/user-attachments/assets/ad24c57c-e184-4a67-850f-18aecc3b87a8" />
